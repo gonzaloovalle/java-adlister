@@ -1,3 +1,7 @@
+package com.adlister.dao;
+
+import com.adlister.models.Ad;
+
 import java.util.ArrayList;
 import java.util.List;
 
