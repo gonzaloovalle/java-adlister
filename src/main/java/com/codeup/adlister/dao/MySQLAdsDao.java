@@ -1,5 +1,6 @@
 package com.codeup.adlister.dao;
 
+import com.adlister.dao.Config;
 import com.codeup.adlister.models.Ad;
 import com.mysql.cj.jdbc.Driver;
 
@@ -32,6 +33,25 @@ public class MySQLAdsDao implements Ads {
         try {
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM ads");
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving all ads.", e);
+        }
+    }
+
+    public List<Ad> searchAllAds(String query) {
+        PreparedStatement stmt = null;
+        String sqlQuery = "SELECT * FROM ads WHERE title LIKE ?";
+        String userInput = "%" + query + "%";
+
+        try {
+            stmt = connection.prepareStatement(sqlQuery);
+            stmt.setString(1, userInput);
+
+            stmt.executeQuery();
+
+            ResultSet rs = stmt.getResultSet();
+
             return createAdsFromResults(rs);
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving all ads.", e);
